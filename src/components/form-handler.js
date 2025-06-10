@@ -1,8 +1,9 @@
 import { ModalService } from './modal-service.js';
 
 export class FormHandler {
-    constructor(apiService) {
+    constructor(apiService, appointmentApiService) {
         this.apiService = apiService;
+        this.appointmentApiService = appointmentApiService;
         this.modal = new ModalService();
         this.itemLineCounter = 0;
     }
@@ -11,9 +12,11 @@ export class FormHandler {
         this.form = document.getElementById('shipment-form');
         this.addItemBtn = document.getElementById('add-item-btn');
         this.itemLinesContainer = document.getElementById('item-lines-container');
+        this.sendAppointmentBtn = document.getElementById('send-appointment-btn');
 
         this.addItemBtn.addEventListener('click', () => this.addLineItem());
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        this.sendAppointmentBtn.addEventListener('click', (e) => this.handleAppointmentSubmit(e));
         
         // Add initial line item
         this.addLineItem();
@@ -56,6 +59,34 @@ export class FormHandler {
         this.itemLinesContainer.insertAdjacentHTML('beforeend', itemLineHTML);
     }
 
+    async handleAppointmentSubmit(event) {
+        event.preventDefault();
+        
+        // Validate required fields for appointment
+        const requiredFields = ['shipment_nbr', 'facility_code', 'company_code', 'shipped_date', 'arrival_time', 'unload_duration'];
+        const formData = new FormData(this.form);
+        
+        for (const field of requiredFields) {
+            if (!formData.get(field)) {
+                this.modal.show('error', 'Error de Validación', `El campo ${field} es requerido para crear la cita.`);
+                return;
+            }
+        }
+
+        this.modal.show('loading', 'Creando Cita...', 'Enviando datos de la cita al servidor de WMS. Por favor, espere.');
+
+        try {
+            const appointmentData = this.extractAppointmentData(formData);
+            const success = await this.appointmentApiService.sendAppointment(appointmentData);
+            
+            if (success) {
+                this.modal.show('success', 'Cita Creada', 'La cita ha sido registrada correctamente en WMS.');
+            }
+        } catch (error) {
+            console.error('Appointment submission error:', error);
+        }
+    }
+
     async handleSubmit(event) {
         event.preventDefault();
         
@@ -86,6 +117,17 @@ export class FormHandler {
         } catch (error) {
             console.error('Form submission error:', error);
         }
+    }
+
+    extractAppointmentData(formData) {
+        return {
+            shipment_nbr: formData.get('shipment_nbr'),
+            facility_code: formData.get('facility_code'),
+            company_code: formData.get('company_code'),
+            shipped_date: formData.get('shipped_date'),
+            arrival_time: formData.get('arrival_time'),
+            unload_duration: formData.get('unload_duration')
+        };
     }
 
     extractHeaderData(formData) {

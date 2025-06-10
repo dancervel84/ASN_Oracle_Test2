@@ -2,8 +2,9 @@ import { ModalService } from './modal-service.js';
 import * as XLSX from 'xlsx';
 
 export class CSVProcessor {
-    constructor(apiService) {
+    constructor(apiService, appointmentApiService) {
         this.apiService = apiService;
+        this.appointmentApiService = appointmentApiService;
         this.modal = new ModalService();
     }
 
@@ -69,13 +70,15 @@ export class CSVProcessor {
                 company_code: columns[2] || '',
                 manifest_nbr: columns[3] || '',
                 shipped_date: columns[4] || '',
-                cust_field_1: columns[5] || '',
-                seq_nbr: columns[6] || '',
-                item_part_a: columns[7] || '',
-                lpn_nbr: columns[8] || '',
-                shipped_qty: columns[9] || '',
-                batch_nbr: columns[10] || '',
-                expiry_date: columns[11] || ''
+                arrival_time: columns[5] || '',
+                unload_duration: columns[6] || '',
+                cust_field_1: columns[7] || '',
+                seq_nbr: columns[8] || '',
+                item_part_a: columns[9] || '',
+                lpn_nbr: columns[10] || '',
+                shipped_qty: columns[11] || '',
+                batch_nbr: columns[12] || '',
+                expiry_date: columns[13] || ''
             };
         });
     }
@@ -99,13 +102,15 @@ export class CSVProcessor {
                         company_code: row[2] || '',
                         manifest_nbr: row[3] || '',
                         shipped_date: this.formatExcelDate(row[4]) || '',
-                        cust_field_1: row[5] || '',
-                        seq_nbr: row[6] || '',
-                        item_part_a: row[7] || '',
-                        lpn_nbr: row[8] || '',
-                        shipped_qty: row[9] || '',
-                        batch_nbr: row[10] || '',
-                        expiry_date: this.formatExcelDate(row[11]) || ''
+                        arrival_time: this.formatExcelTime(row[5]) || '',
+                        unload_duration: row[6] || '',
+                        cust_field_1: row[7] || '',
+                        seq_nbr: row[8] || '',
+                        item_part_a: row[9] || '',
+                        lpn_nbr: row[10] || '',
+                        shipped_qty: row[11] || '',
+                        batch_nbr: row[12] || '',
+                        expiry_date: this.formatExcelDate(row[13]) || ''
                     }));
                     
                     resolve(processedData);
@@ -140,13 +145,32 @@ export class CSVProcessor {
         return dateValue.toString();
     }
 
+    formatExcelTime(timeValue) {
+        if (!timeValue) return '';
+        
+        // If it's already a string in HH:MM format, return as is
+        if (typeof timeValue === 'string' && timeValue.includes(':')) {
+            return timeValue;
+        }
+        
+        // If it's an Excel time serial number (fraction of a day)
+        if (typeof timeValue === 'number' && timeValue < 1) {
+            const totalMinutes = Math.round(timeValue * 24 * 60);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        }
+        
+        return timeValue.toString();
+    }
+
     parseFileData(data) {
         const shipments = {};
         
         data.forEach(row => {
             if (!row.shipment_nbr) return; // Skip empty rows
 
-            const { shipment_nbr, facility_code, company_code, manifest_nbr, shipped_date, cust_field_1, 
+            const { shipment_nbr, facility_code, company_code, manifest_nbr, shipped_date, arrival_time, unload_duration, cust_field_1, 
                     item_part_a, lpn_nbr, shipped_qty, batch_nbr, expiry_date } = row;
 
             if (!shipments[shipment_nbr]) {
@@ -167,6 +191,14 @@ export class CSVProcessor {
                         manifest_nbr, 
                         shipped_date: formattedShippedDate, 
                         cust_field_1 
+                    },
+                    appointmentData: {
+                        shipment_nbr,
+                        facility_code,
+                        company_code,
+                        shipped_date: formattedShippedDate,
+                        arrival_time,
+                        unload_duration
                     },
                     itemLinesData: []
                 };
@@ -196,7 +228,14 @@ export class CSVProcessor {
     async processShipments(shipments) {
         const apiRequests = Object.values(shipments).map(async (shipment) => {
             try {
+                // Send both shipment and appointment data
                 await this.apiService.sendShipment(shipment.headerData, shipment.itemLinesData);
+                
+                // Only send appointment if we have the required data
+                if (shipment.appointmentData.arrival_time && shipment.appointmentData.unload_duration) {
+                    await this.appointmentApiService.sendAppointment(shipment.appointmentData);
+                }
+                
                 return { status: 'fulfilled', value: shipment.headerData.shipment_nbr };
             } catch (error) {
                 return { 

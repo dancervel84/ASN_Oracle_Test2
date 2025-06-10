@@ -35,6 +35,14 @@ export function createFormHTML() {
                             <input type="date" id="shipped_date" name="shipped_date" class="form-input" required>
                         </div>
                         <div>
+                            <label for="arrival_time" class="form-label">Hora de Arribo <span class="text-red-500">*</span></label>
+                            <input type="time" id="arrival_time" name="arrival_time" class="form-input" required>
+                        </div>
+                        <div>
+                            <label for="unload_duration" class="form-label">Duración de Descarga (minutos) <span class="text-red-500">*</span></label>
+                            <input type="number" id="unload_duration" name="unload_duration" class="form-input" min="1" required>
+                        </div>
+                        <div>
                             <label for="cust_field_1" class="form-label">Campo Adicional <span class="text-red-500">*</span></label>
                             <input type="text" id="cust_field_1" name="cust_field_1" class="form-input" required>
                         </div>
@@ -67,9 +75,15 @@ export function createFormHTML() {
                     </div>
                 </div>
 
-                <!-- Submit Button -->
+                <!-- Submit Buttons -->
                 <div class="pt-5">
-                    <div class="flex justify-end">
+                    <div class="flex flex-col sm:flex-row gap-4 justify-end">
+                        <button type="button" id="send-appointment-btn" class="btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                            </svg>
+                            Crear Cita
+                        </button>
                         <button type="submit" class="btn-primary">
                             Enviar Datos a WMS
                         </button>

@@ -3,6 +3,7 @@ import { createModalHTML } from './modal-template.js';
 import { FormHandler } from './form-handler.js';
 import { CSVProcessor } from './csv-processor.js';
 import { APIService } from './api-service.js';
+import { AppointmentAPIService } from './appointment-api-service.js';
 
 export function initializeApp() {
     const app = document.getElementById('app');
@@ -15,8 +16,9 @@ export function initializeApp() {
     
     // Initialize services
     const apiService = new APIService();
-    const csvProcessor = new CSVProcessor(apiService);
-    const formHandler = new FormHandler(apiService);
+    const appointmentApiService = new AppointmentAPIService();
+    const csvProcessor = new CSVProcessor(apiService, appointmentApiService);
+    const formHandler = new FormHandler(apiService, appointmentApiService);
     
     // Initialize form functionality
     formHandler.init();
