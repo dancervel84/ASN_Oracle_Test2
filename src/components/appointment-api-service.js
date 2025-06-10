@@ -68,7 +68,7 @@ export class AppointmentAPIService {
                 <company_code>${headerData.company_code}</company_code>
             <appt_nbr>${headerData.shipment_nbr}</appt_nbr>
             <load_nbr>${headerData.shipment_nbr}</load_nbr>
-            <dock_type>Entrada</dock_type>
+            <dock_type>Entradas</dock_type>
             <action_code>CREATE</action_code>
             <preferred_dock_nbr></preferred_dock_nbr>
             <planned_start_ts>${plannedStartTs}</planned_start_ts>
