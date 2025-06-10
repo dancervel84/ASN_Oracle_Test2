@@ -49,7 +49,7 @@ export class AppointmentAPIService {
         const timestamp = now.toISOString().slice(0, 19);
         
         // Combine arrival date and time into ISO format
-        const plannedStartTs = this.formatPlannedStartTime(appointmentData.shipped_date, appointmentData.arrival_time);
+        const plannedStartTs = this.formatPlannedStartTime(headerData.shipped_date, appointmentData.arrival_time);
 
         return `<?xml version="1.0" encoding="utf-8"?>
 <LgfData>
