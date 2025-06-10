@@ -82,10 +82,10 @@ export class AppointmentAPIService {
 </LgfData>`;
     }
 
-    formatPlannedStartTime(shippedDate, arrivalTime) {
+    formatPlannedStartTime(.shipped_date, arrivalTime) {
         // shippedDate is in YYYY-MM-DD format
         // arrivalTime is in HH:MM format (24hrs)
         // Return format: YYYY-MM-DDTHH:MM:00
-        return `${shippedDate}T${arrivalTime}:00`;
+        return `${shipped_date}T${arrivalTime}:00`;
     }
 }
