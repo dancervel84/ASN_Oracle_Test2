@@ -64,10 +64,10 @@ export class AppointmentAPIService {
     </Header>
     <ListOfAppointments>
         <appointment>
-            <facility_code>${appointmentData.facility_code}</facility_code>
-            <company_code>${appointmentData.company_code}</company_code>
-            <appt_nbr>${appointmentData.shipment_nbr}</appt_nbr>
-            <load_nbr>${appointmentData.shipment_nbr}</load_nbr>
+             <facility_code>${headerData.facility_code}</facility_code>
+                <company_code>${headerData.company_code}</company_code>
+            <appt_nbr>${headerData.shipment_nbr}</appt_nbr>
+            <load_nbr>${headerData.shipment_nbr}</load_nbr>
             <dock_type>I</dock_type>
             <action_code>CREATE</action_code>
             <preferred_dock_nbr></preferred_dock_nbr>
