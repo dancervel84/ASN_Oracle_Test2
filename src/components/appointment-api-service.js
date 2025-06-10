@@ -55,9 +55,9 @@ export class AppointmentAPIService {
 <LgfData>
     <Header>
         <DocumentVersion>23C</DocumentVersion>
-        <OriginSystem>str1234</OriginSystem>
-        <ClientEnvCode>str1234</ClientEnvCode>
-        <ParentCompanyCode>QATSTPC</ParentCompanyCode>
+        <OriginSystem>Host</OriginSystem>
+        <ClientEnvCode>QA</ClientEnvCode>
+        <ParentCompanyCode>QATCTPC</ParentCompanyCode>
         <Entity>appointment</Entity>
         <TimeStamp>${timestamp}</TimeStamp>
         <MessageId>str1234</MessageId>
@@ -68,7 +68,7 @@ export class AppointmentAPIService {
                 <company_code>${headerData.company_code}</company_code>
             <appt_nbr>${headerData.shipment_nbr}</appt_nbr>
             <load_nbr>${headerData.shipment_nbr}</load_nbr>
-            <dock_type>I</dock_type>
+            <dock_type>Entrada</dock_type>
             <action_code>CREATE</action_code>
             <preferred_dock_nbr></preferred_dock_nbr>
             <planned_start_ts>${plannedStartTs}</planned_start_ts>
