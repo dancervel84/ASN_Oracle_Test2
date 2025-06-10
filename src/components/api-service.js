@@ -85,6 +85,7 @@ export class APIService {
                 <company_code>${headerData.company_code}</company_code>
                 <action_code>CREATE</action_code>
                 <shipment_type>ENT</shipment_type>
+                <load_nbr>${headerData.shipment_nbr}</load_nbr>
                 <manifest_nbr>${headerData.manifest_nbr}</manifest_nbr>
                 <shipped_date>${headerData.shipped_date}</shipped_date>
                 <cust_field_1>${headerData.cust_field_1}</cust_field_1>
