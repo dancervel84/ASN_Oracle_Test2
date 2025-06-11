@@ -35,9 +35,9 @@ export class DashboardHandler {
             case 'orders':
                 alert('Módulo de Órdenes - En desarrollo');
                 break;
-            case 'reports':
-                alert('Módulo de Reportes - En desarrollo');
-                break;
+            //case 'reports':
+              //  alert('Módulo de Reportes - En desarrollo');
+                //break;
             default:
                 console.log('Módulo no reconocido:', module);
         }
