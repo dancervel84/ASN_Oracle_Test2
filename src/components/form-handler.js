@@ -81,6 +81,7 @@ export class FormHandler {
             
             if (success) {
                 this.modal.show('success', 'Cita Creada', 'La cita ha sido registrada correctamente en WMS.');
+                this.resetForm();
             }
         } catch (error) {
             console.error('Appointment submission error:', error);
@@ -112,7 +113,7 @@ export class FormHandler {
             
             if (success) {
                 this.modal.show('success', 'Éxito', 'El embarque ha sido registrado correctamente en WMS.');
-                this.resetForm();
+              
             }
         } catch (error) {
             console.error('Form submission error:', error);
