@@ -1,5 +1,8 @@
 import './style.css'
-import { initializeApp } from './components/shipment-app.js'
+import { AppRouter } from './components/app-router.js'
 
-// Initialize the application
-document.addEventListener('DOMContentLoaded', initializeApp);
+// Initialize the application router
+document.addEventListener('DOMContentLoaded', () => {
+    const router = new AppRouter();
+    router.init();
+});
