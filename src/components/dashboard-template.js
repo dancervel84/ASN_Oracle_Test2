@@ -130,7 +130,7 @@ export function createDashboardHTML(user) {
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button class="nav-btn w-full text-left px-4 py-2 text-sm text-orange-600 hover:bg-orange-50 rounded-md transition duration-150 ease-in-out" data-module="reports">*/
+                                    <button class="nav-btn w-full text-left px-4 py-2 text-sm text-orange-600 hover:bg-orange-50 rounded-md transition duration-150 ease-in-out" data-module="reports">
                                         Acceder al módulo
                                     </button>
                                 </div>
