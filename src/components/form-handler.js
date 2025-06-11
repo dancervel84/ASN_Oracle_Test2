@@ -17,7 +17,7 @@ export class FormHandler {
         this.addItemBtn.addEventListener('click', () => this.addLineItem());
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
         this.sendAppointmentBtn.addEventListener('click', (e) => this.handleAppointmentSubmit(e));
-        
+        send-appointment-btn.disable = true
         // Add initial line item
         this.addLineItem();
     }
