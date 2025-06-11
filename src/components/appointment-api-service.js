@@ -49,7 +49,7 @@ export class AppointmentAPIService {
         const timestamp = now.toISOString().slice(0, 19);
         
         // Combine arrival date and time into ISO format
-        const plannedStartTs = this.formatPlannedStartTime(headerData.shipped_date, appointmentData.arrival_time);
+        const plannedStartTs = this.formatPlannedStartTime(appointmentData.shipped_date, appointmentData.arrival_time);
 
         return `<?xml version="1.0" encoding="utf-8"?>
 <LgfData>
@@ -64,10 +64,10 @@ export class AppointmentAPIService {
     </Header>
     <ListOfAppointments>
         <appointment>
-             <facility_code>${headerData.facility_code}</facility_code>
-                <company_code>${headerData.company_code}</company_code>
-            <appt_nbr>${headerData.shipment_nbr}</appt_nbr>
-            <load_nbr>${headerData.shipment_nbr}</load_nbr>
+             <facility_code>${appointmentData.facility_code}</facility_code>
+                <company_code>${appointmentData.company_code}</company_code>
+            <appt_nbr>${appointmentData.shipment_nbr}</appt_nbr>
+            <load_nbr>${appointmentData.shipment_nbr}</load_nbr>
             <dock_type>Entradas</dock_type>
             <action_code>CREATE</action_code>
             <preferred_dock_nbr></preferred_dock_nbr>
