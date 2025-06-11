@@ -117,7 +117,7 @@ export class AppRouter {
 
         // Add navigation event listeners
         const backBtn = document.getElementById('back-to-dashboard');
-        const logoutBtn = document.getElementById('logout-btn-asn');
+        const logoutBtn = document.getElementById('logout-btn');
 
         if (backBtn) {
             backBtn.addEventListener('click', () => this.showDashboard());
