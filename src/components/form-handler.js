@@ -58,6 +58,7 @@ export class FormHandler {
         `;
         this.itemLinesContainer.insertAdjacentHTML('beforeend', itemLineHTML);
     }
+
     async handleSubmit(event) {
         event.preventDefault();
         
@@ -72,7 +73,25 @@ export class FormHandler {
             return;
         }
 
-        this.modal.show('loading', 'Procesando...', 'Enviando datos al servidor de WMS. Por favor, espere.'); async handleAppointmentSubmit(event) {
+        this.modal.show('loading', 'Procesando...', 'Enviando datos al servidor de WMS. Por favor, espere.');
+
+        try {
+            const formData = new FormData(this.form);
+            const headerData = this.extractHeaderData(formData);
+            const itemLinesData = this.extractItemLinesData(itemLines);
+
+            const success = await this.apiService.sendShipment(headerData, itemLinesData);
+            
+            if (success) {
+                this.modal.show('success', 'Éxito', 'El embarque ha sido registrado correctamente en WMS.');
+                this.resetForm();
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+        }
+    }
+
+    async handleAppointmentSubmit(event) {
         event.preventDefault();
         
         // Validate required fields for appointment
@@ -98,22 +117,6 @@ export class FormHandler {
             }
         } catch (error) {
             console.error('Appointment submission error:', error);
-        }
-    }
-
-        try {
-            const formData = new FormData(this.form);
-            const headerData = this.extractHeaderData(formData);
-            const itemLinesData = this.extractItemLinesData(itemLines);
-
-            const success = await this.apiService.sendShipment(headerData, itemLinesData);
-            
-            if (success) {
-                this.modal.show('success', 'Éxito', 'El embarque ha sido registrado correctamente en WMS.');
-              
-            }
-        } catch (error) {
-            console.error('Form submission error:', error);
         }
     }
 
