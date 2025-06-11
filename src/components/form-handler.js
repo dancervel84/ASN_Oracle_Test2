@@ -58,8 +58,21 @@ export class FormHandler {
         `;
         this.itemLinesContainer.insertAdjacentHTML('beforeend', itemLineHTML);
     }
+    async handleSubmit(event) {
+        event.preventDefault();
+        
+        if (!this.form.checkValidity()) {
+            this.form.reportValidity();
+            return;
+        }
 
-    async handleAppointmentSubmit(event) {
+        const itemLines = document.querySelectorAll('.item-line');
+        if (itemLines.length === 0) {
+            this.modal.show('error', 'Error de Validación', 'Debe agregar al menos un artículo al embarque.');
+            return;
+        }
+
+        this.modal.show('loading', 'Procesando...', 'Enviando datos al servidor de WMS. Por favor, espere.'); async handleAppointmentSubmit(event) {
         event.preventDefault();
         
         // Validate required fields for appointment
@@ -87,22 +100,6 @@ export class FormHandler {
             console.error('Appointment submission error:', error);
         }
     }
-
-    async handleSubmit(event) {
-        event.preventDefault();
-        
-        if (!this.form.checkValidity()) {
-            this.form.reportValidity();
-            return;
-        }
-
-        const itemLines = document.querySelectorAll('.item-line');
-        if (itemLines.length === 0) {
-            this.modal.show('error', 'Error de Validación', 'Debe agregar al menos un artículo al embarque.');
-            return;
-        }
-
-        this.modal.show('loading', 'Procesando...', 'Enviando datos al servidor de WMS. Por favor, espere.');
 
         try {
             const formData = new FormData(this.form);
