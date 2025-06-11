@@ -113,7 +113,7 @@ export function createDashboardHTML(user) {
                             </div>
                         </div>
 
-                        /*<!-- Reports Module -->
+                        <!-- Reports Module -->
                         <div class="bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
                             <div class="p-6">
                                 <div class="flex items-center">
@@ -135,7 +135,7 @@ export function createDashboardHTML(user) {
                                     </button>
                                 </div>
                             </div>
-                        </div>*/
+                        </div>
                     </div>
                 </div>
             </div>
