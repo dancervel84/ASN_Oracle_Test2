@@ -13,11 +13,14 @@ export class FormHandler {
         this.addItemBtn = document.getElementById('add-item-btn');
         this.itemLinesContainer = document.getElementById('item-lines-container');
         this.sendAppointmentBtn = document.getElementById('send-appointment-btn');
+        this.submitBtn = this.form.querySelector('button[type="submit"]');
 
         this.addItemBtn.addEventListener('click', () => this.addLineItem());
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
         this.sendAppointmentBtn.addEventListener('click', (e) => this.handleAppointmentSubmit(e));
         
+        // Deshabilitar el botón de Crear Cita al inicio
+        this.sendAppointmentBtn.disabled = true;
         
         // Add initial line item
         this.addLineItem();
@@ -114,7 +117,10 @@ export class FormHandler {
             
             if (success) {
                 this.modal.show('success', 'Éxito', 'El embarque ha sido registrado correctamente en WMS.');
-              
+                
+                // Habilitar el botón de Crear Cita y deshabilitar el de Enviar Datos
+                this.sendAppointmentBtn.disabled = false;
+                this.submitBtn.disabled = true;
             }
         } catch (error) {
             console.error('Form submission error:', error);
@@ -157,5 +163,9 @@ export class FormHandler {
         this.form.reset();
         this.itemLinesContainer.innerHTML = '';
         this.addLineItem();
+        
+        // Restaurar el estado inicial de los botones
+        this.sendAppointmentBtn.disabled = true;
+        this.submitBtn.disabled = false;
     }
 }
