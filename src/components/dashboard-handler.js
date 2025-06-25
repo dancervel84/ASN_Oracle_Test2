@@ -33,11 +33,8 @@ export class DashboardHandler {
                 alert('Módulo de Items - En desarrollo');
                 break;
             case 'orders':
-                alert('Módulo de Órdenes - En desarrollo');
+                window.dispatchEvent(new CustomEvent('navigateToOrders'));
                 break;
-            //case 'reports':
-              //  alert('Módulo de Reportes - En desarrollo');
-                //break;
             default:
                 console.log('Módulo no reconocido:', module);
         }
