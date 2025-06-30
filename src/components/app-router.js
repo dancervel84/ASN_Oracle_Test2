@@ -3,19 +3,15 @@ import { createLoginHTML } from './login-template.js';
 import { createDashboardHTML } from './dashboard-template.js';
 import { createFormHTML } from './form-template.js';
 import { createOrderFormHTML } from './order-form-template.js';
-import { createItemFormHTML } from './item-form-template.js';
 import { createModalHTML } from './modal-template.js';
 import { LoginHandler } from './login-handler.js';
 import { DashboardHandler } from './dashboard-handler.js';
 import { FormHandler } from './form-handler.js';
 import { OrderFormHandler } from './order-form-handler.js';
-import { ItemFormHandler } from './item-form-handler.js';
 import { CSVProcessor } from './csv-processor.js';
 import { OrderCSVProcessor } from './order-csv-processor.js';
-import { ItemCSVProcessor } from './item-csv-processor.js';
 import { APIService } from './api-service.js';
 import { OrderAPIService } from './order-api-service.js';
-import { ItemAPIService } from './item-api-service.js';
 import { AppointmentAPIService } from './appointment-api-service.js';
 
 export class AppRouter {
@@ -38,7 +34,6 @@ export class AppRouter {
         window.addEventListener('logout', () => this.showLogin());
         window.addEventListener('navigateToASN', () => this.showASNModule());
         window.addEventListener('navigateToOrders', () => this.showOrdersModule());
-        window.addEventListener('navigateToItems', () => this.showItemsModule());
     }
 
     showLogin() {
@@ -201,83 +196,6 @@ export class AppRouter {
         
         orderFormHandler.init();
         orderCsvProcessor.init();
-
-        // Add navigation event listeners
-        const backBtn = document.getElementById('back-to-dashboard');
-        const logoutBtn = document.getElementById('logout-btn');
-
-        if (backBtn) {
-            backBtn.addEventListener('click', () => this.showDashboard());
-        }
-
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                this.authService.logout();
-                this.showLogin();
-            });
-        }
-    }
-
-    showItemsModule() {
-        const user = this.authService.getCurrentUser();
-        if (!user) {
-            this.showLogin();
-            return;
-        }
-
-        this.currentView = 'items';
-        this.app.innerHTML = `
-            <div class="min-h-screen bg-gray-100">
-                <!-- Header with back button -->
-                <header class="bg-white shadow-sm border-b">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex justify-between items-center h-16">
-                            <div class="flex items-center">
-                                <button id="back-to-dashboard" class="mr-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition duration-150 ease-in-out">
-                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                                    </svg>
-                                </button>
-                                <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
-                                    <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                                    </svg>
-                                </div>
-                                <h1 class="text-xl font-semibold text-gray-900">Items - Interfaz de Artículos</h1>
-                            </div>
-                            
-                            <div class="flex items-center space-x-4">
-                                <div class="text-right">
-                                    <div class="text-sm font-medium text-gray-900">Usuario: ${user.usuario}</div>
-                                    <div class="text-xs text-gray-500 max-w-xs truncate" title="${user.compania}">
-                                        ${user.compania}
-                                    </div>
-                                </div>
-                                <button id="logout-btn" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition duration-150 ease-in-out">
-                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-
-                <!-- Items Module Content -->
-                <div class="py-6">
-                    ${createItemFormHTML()}
-                </div>
-            </div>
-            ${createModalHTML()}
-        `;
-
-        // Initialize Items module functionality
-        const itemApiService = new ItemAPIService();
-        const itemCsvProcessor = new ItemCSVProcessor(itemApiService);
-        const itemFormHandler = new ItemFormHandler(itemApiService);
-        
-        itemFormHandler.init();
-        itemCsvProcessor.init();
 
         // Add navigation event listeners
         const backBtn = document.getElementById('back-to-dashboard');
