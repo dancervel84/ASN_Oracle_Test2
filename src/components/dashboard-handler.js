@@ -30,7 +30,7 @@ export class DashboardHandler {
                 window.dispatchEvent(new CustomEvent('navigateToASN'));
                 break;
             case 'items':
-                alert('Módulo de Items - En desarrollo');
+                window.dispatchEvent(new CustomEvent('navigateToItems'));
                 break;
             case 'orders':
                 window.dispatchEvent(new CustomEvent('navigateToOrders'));
